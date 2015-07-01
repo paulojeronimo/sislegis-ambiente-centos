@@ -1,0 +1,38 @@
+#!/bin/bash
+# Author: Paulo Jeronimo (paulojeronimo@gmail.com)
+set +x
+
+BASEDIR=`cd $(dirname "$0"); echo -n $PWD`
+source "$BASEDIR"/config || exit 1
+source "$BASEDIR"/defaults || exit 1
+
+[ $USER = vagrant ] && {
+    sudo tar cvfP /sislegis-ambiente-comum/"$VAGRANT_BACKUP_TAR" /var/cache
+    salvar-instaladores
+    exit
+}
+
+grep -q ^$SISLEGIS_USER /etc/passwd || { echo "Usuário $SISLEGIS_USER não existe!"; exit; }
+
+sudo -i -u $SISLEGIS_USER \
+$(eval echo -n ~$SISLEGIS_USER/sislegis-ambiente/scripts/salvar-instaladores)
+
+comum="$BASEDIR"/../sislegis-ambiente-comum
+sudo chown -R $SISLEGIS_USER: "$comum"
+mkdir -p "$comum" && cd "$comum"
+for d in ${SISLEGIS_USER_DIRS[*]}
+do
+    sudo bash <<EOF
+cd ~$SISLEGIS_USER
+if [ -L $d ]
+then
+    rsync -avLR --update --delete $d/ "$PWD"/
+elif [ -d $d ]
+then
+    rsync -avR --update --delete $d "$PWD"/
+fi
+EOF
+done
+sudo chown -R $USER: "$comum"
+
+# vim: ts=4 sw=4 expandtab:

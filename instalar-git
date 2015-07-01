@@ -1,0 +1,11 @@
+#!/bin/bash
+set -x
+
+sudo yum -y install curl-devel expat-devel gettext-devel openssl-devel zlib-devel
+sudo yum -y install gcc perl-ExtUtils-MakeMaker
+cd /usr/src
+curl https://www.kernel.org/pub/software/scm/git/git-2.0.5.tar.gz | sudo tar xz
+cd git-2.0.5
+sudo make prefix=/usr/local/git all
+sudo make prefix=/usr/local/git install
+echo "export PATH=$PATH:/usr/local/git/bin" | sudo tee /etc/profile.d/git.sh
