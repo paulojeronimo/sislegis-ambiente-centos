@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+set +x
 
 sudo yum -y install curl-devel expat-devel gettext-devel openssl-devel zlib-devel
 sudo yum -y install gcc perl-ExtUtils-MakeMaker

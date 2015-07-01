@@ -31,7 +31,7 @@ else
     sudo sed -i 's/\(keepcache=\).*/\11/' /etc/yum.conf
 fi
 
-"$BASEDIR"/restaurar
+[ $USER != vagrant ] && "$BASEDIR"/restaurar
 
 sudo -i -u $SISLEGIS_USER bash <<EOF
 executar_e_inserir_no_bashrc() {
@@ -51,12 +51,6 @@ then
 fi
 
 executar_e_inserir_no_bashrc "export INSTALA_OPCS+=\" $BAIXA_ARQUIVO\""
-
-$ATUALIZA_KERNEL || EXCLUDE_KERNEL="--exclude='kernel*'"
-sudo yum -y update \$EXCLUDE_KERNEL
-
-"$BASEDIR"/instalar-git
-source /etc/profile.d/git.sh
 
 sudo yum -y install rsync tar unzip wget tree dos2unix lsof redhat-lsb-core vim java-1.8.0-openjdk-devel
 
