@@ -2,42 +2,59 @@
 
 ## Resumo
 
-Este projeto prepara uma máquina CentOS para executar o SISLEGIS num ambiente de desenvolvimento ou de homologação.
+Este projeto prepara uma máquina CentOS para execução do SISLEGIS em ambiente de homologação (default) ou de desenvolvimento.
 
 ## Requisitos
 
-* Se o nome configurado para APP_HOST não estiver no DNS, ele deverá ser configurado localmente no arquivo /etc/hosts.
-    * Deverá haver uma linha no arquivo /etc/hosts com os seguintes valores: "$APP_IP $APP_HOST"
+Verifique o conteúdo do arquivo ``config`` (tua cópia de ``config.exemplo``). Se o nome configurado para APP_HOST não estiver no DNS de tua rede, ele deverá ser configurado localmente no arquivo ``/etc/hosts`` de tua máquina. Ou seja, deverá haver uma linha no arquivo ``/etc/hosts`` com os valores informados para ``$APP_IP`` e ``$APP_HOST``.
 
 ## Instalação através do Vagrant
 
-* Procedimentos para o provisionamento:
+### Procedimentos para o provisionamento
+
 ```bash
 git clone http://github.com/pensandoodireito/sislegis-ambiente-centos
 cd sislegis-ambiente-centos
 cp config.exemplo config
-vim config
+vi config
 vagrant up
 vagrant ssh -c /vagrant/instalar
 ``` 
-* URLS de acesso:
-    * As mesmas informadas em https://github.com/pensandoodireito/sislegis-ambiente-fedora/blob/master/README.md
-    
-* Procedimentos para o salvamento:
+
+### Procedimentos para o salvamento
+
 ```bash
 vagrant ssh -c /vagrant/salvar
 ```
 
 ## Instalação sem o uso do Vagrant
 
-* Procedimentos para o provisionamento:
+### Criação do usuário sislegis-admin
+
+```
+sudo useradd sislegis-admin
+echo '%sislegis-admin ALL=(ALL) NOPASSWD: ALL' | sudo tee /etc/sudoers.d/sislegis-admin
+```
+
+### Procedimentos para o provisionamento
+
 ```bash
+sudo su - sislegis-admin
 sudo yum -y install curl
 bash <(curl https://raw.githubusercontent.com/pensandoodireito/sislegis-ambiente-centos/master/instalar-git)
 source /etc/profile.d/git.sh
 git clone http://github.com/pensandoodireito/sislegis-ambiente-centos
 cd sislegis-ambiente-centos
 cp config.exemplo config
-vim config
+vi config
 ./instalar
+```
+
+## Instalação em ambiente de desenvolvimento
+
+Os passos a serem seguidos são idênticos aos apresentados acima. A única diferença é que, antes da execução do script ``instalar``, as três linhas a seguir devem ser removidas do arquivo ``config``:
+```
+APP_AMBIENTE=homologacao
+APP_HOST=homologacao-sislegis.pensandoodireito.mj.gov.br
+APP_IP=172.17.6.80
 ```

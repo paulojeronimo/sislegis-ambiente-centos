@@ -54,8 +54,15 @@ executar_e_inserir_no_bashrc "export INSTALA_OPCS+=\" $BAIXA_ARQUIVO\""
 
 sudo yum -y update --exclude='kernel*'
 
-"$BASEDIR"/instalar-git
-source /etc/profile.d/git.sh
+if type git &> /dev/null
+then
+    if ! grep -q 2.0.5 <(git --version)
+    then
+        sudo yum -y remove git
+        "$BASEDIR"/instalar-git
+        source /etc/profile.d/git.sh
+    fi
+fi
 
 sudo yum -y install rsync tar unzip wget tree dos2unix lsof redhat-lsb-core vim java-1.8.0-openjdk-devel
 
