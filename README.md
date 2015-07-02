@@ -50,6 +50,12 @@ vi config
 ./instalar
 ```
 
+## IMPORTANTE!!!
+
+Após a instalação do JBoss (WildFly), editar o arquivo ``$JBOSS_HOME/bin/standalone.conf`` e ajustar os parâmetros de memória!
+
+Recomenda-se para o ambiente de homologação do SISLEGIS, numa com 8GB de memória, os seguintes parâmetros de memória: ``-Xms4096m -Xmx4096m``.
+
 ## Instalação em ambiente de desenvolvimento
 
 Os passos a serem seguidos são idênticos aos apresentados acima. A única diferença é que, antes da execução do script ``instalar``, as três linhas a seguir devem ser removidas do arquivo ``config``:
