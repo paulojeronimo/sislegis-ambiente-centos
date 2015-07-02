@@ -10,12 +10,22 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # (feita pelo plugin vbguest - https://github.com/dotless-de/vagrant-vbguest)
   #config.vbguest.auto_update = false
 
-  # Exporta as portas utilizadas pelo WildFly
-  config.vm.network :forwarded_port, guest: 8080, host: 8080
-  config.vm.network :forwarded_port, guest: 9990, host: 9990
+  # Configura o hostname
+  config.vm.hostname = "sislegis0"
 
-  # Exporta portas utilizadas pelo PostgreSQL
-  config.vm.network :forwarded_port, guest: 5432, host: 5432
+  # Configura o ip
+  config.vm.network "private_network", ip: "172.17.6.80"
+
+  # Exporta as portas 80 e 443 (para testes em homologação)
+  config.vm.network :forwarded_port, guest: 80, host: 80
+  config.vm.network :forwarded_port, guest: 443, host: 443
+
+  # Exporta as portas 8080 e 8443 (para testes em desenvolvimento)
+  config.vm.network :forwarded_port, guest: 8080, host: 8080
+  config.vm.network :forwarded_port, guest: 8443, host: 8443
+
+  # Exporta a porta de administração do WildFly
+  config.vm.network :forwarded_port, guest: 9990, host: 9990
 
   config.vm.provider "virtualbox" do |v|
     # Apresenta a console da VM dentro do VirtualBox:
