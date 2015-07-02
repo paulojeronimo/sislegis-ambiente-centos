@@ -59,9 +59,10 @@ then
     if ! grep -q 2.0.5 <(git --version)
     then
         sudo yum -y remove git
-        "$BASEDIR"/instalar-git
-        source /etc/profile.d/git.sh
+        "$BASEDIR"/instalar-git; source /etc/profile.d/git.sh
     fi
+else
+    "$BASEDIR"/instalar-git; source /etc/profile.d/git.sh
 fi
 
 sudo yum -y install rsync tar unzip wget tree dos2unix lsof redhat-lsb-core vim java-1.8.0-openjdk-devel
