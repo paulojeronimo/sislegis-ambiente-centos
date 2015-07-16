@@ -16,10 +16,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Configura o ip
   config.vm.network "private_network", ip: "172.17.6.80"
 
-  # Exporta as portas 80 e 443 (para testes em homologação)
-  config.vm.network :forwarded_port, guest: 80, host: 80
-  config.vm.network :forwarded_port, guest: 443, host: 443
-
   # Exporta as portas 8080 e 8443 (para testes em desenvolvimento)
   config.vm.network :forwarded_port, guest: 8080, host: 8080
   config.vm.network :forwarded_port, guest: 8443, host: 8443
